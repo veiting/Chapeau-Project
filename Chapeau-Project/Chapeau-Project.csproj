@@ -7,4 +7,10 @@
     <RootNamespace>Chapeau_Project</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+    <Folder Include="Services\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>

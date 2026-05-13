@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Chapeau_Project.Repositories;
+using Chapeau_Project.Services;
+
 namespace Chapeau_Project
 {
     public class Program
@@ -8,6 +12,7 @@ namespace Chapeau_Project
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSingleton<IMenuItemRepository, MenuItemRepository>();
 
             var app = builder.Build();
 

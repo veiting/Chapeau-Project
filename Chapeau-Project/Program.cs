@@ -1,3 +1,8 @@
+using Chapeau_Project.Repositories;
+using Chapeau_Project.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+
 namespace Chapeau_Project
 {
     public class Program
@@ -8,6 +13,27 @@ namespace Chapeau_Project
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSingleton<IEmployeeRepository, EmployeeRepository>(); 
+            builder.Services.AddSingleton<ITableRepository, TableRepository>();
+
+            builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
+            builder.Services.AddSingleton<ITableService, TableService>();
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
 
@@ -21,10 +47,10 @@ namespace Chapeau_Project
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",
